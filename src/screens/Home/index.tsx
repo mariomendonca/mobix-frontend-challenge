@@ -2,17 +2,20 @@ import { CenterView, Container } from "../../styles/global"
 import { Logo, Scroll, SearchContainer, SearchInput, SinglePokemonContainer } from "./styles"
 import logoImg from '../../assets/logo.png'
 import { Icon } from "@ui-kitten/components"
-import { ActivityIndicator, FlatList, Text, TouchableOpacity, View } from "react-native"
+import { ActivityIndicator, Text, TouchableOpacity } from "react-native"
 import { colors } from "../../styles/colors"
 import { Card } from "../../components/Card"
 import { StackScreenProps } from "@react-navigation/stack"
 import { AuthRoutesProps } from "../../routes/auth.routes"
-import { useCallback, useEffect, useState } from "react"
-import { getAll, getPokemonByName } from "../../services/pokemon"
+import { useEffect, useState } from "react"
+import { getAll, getPokemonByName, getPokemonByType } from "../../services/pokemon"
+import { useSelector } from "react-redux"
 
 type Props = StackScreenProps<AuthRoutesProps, 'Home'>
 
 export function Home({ navigation }: Props) {
+  const filter = useSelector((state: any) => state.filter.value)
+
   const [searchInput, setSearchInput] = useState('')
 
   const [data, setData] = useState<Array<any>>([])
@@ -41,9 +44,21 @@ export function Home({ navigation }: Props) {
     setGetMoreLoading(false)
   }
 
+  // async function handleGetPokemonsByType() {
+  //   const promises = filter.map((item) => getPokemonByType(item))
+  //   console.log(promises)
+  //   Promise.all()
+  // }
+
   useEffect(() => {
     handleGetAllPokemons()
-  }, [])
+    // if (filter.length > 0) {
+    //   handleGetAllPokemons()
+    // } else {
+    //   handleGetPokemonsByType()
+    // }
+    // handleGetPokemonsByType()
+  }, [filter])
 
   async function handleGetPokemonByName() {
     try {
@@ -107,8 +122,22 @@ export function Home({ navigation }: Props) {
         </CenterView>
       ) : pokemon.name ? (
         <SinglePokemonContainer>
-          <Card name={pokemon.name} />
+          <Card name={pokemon.name} onPress={() => navigation.navigate('PokemonDetails', {name: pokemon.name})} />
         </SinglePokemonContainer>
+      ) : filter.length === 0 ? (
+        <Scroll
+          keyExtractor={(item: any) => item.name}
+          data={data}
+          numColumns={2}
+          columnWrapperStyle={{ justifyContent: 'space-between' }}
+          contentContainerStyle={{ paddingBottom: 30, paddingHorizontal: 24 }}
+          renderItem={({ item }: any) => (
+            <Card name={item.name} onPress={() => navigation.navigate('PokemonDetails', {name: item.name})} />
+          )}
+          onEndReached={handleGetMorePokemons}
+          onEndReachedThreshold={endOfFetch ? 0.1 : 0}
+          ListFooterComponent={endOfFetch ? RenderNoMorePokemons : renderFooterLoading}
+        />
       ) : (
         <Scroll
           keyExtractor={(item: any) => item.name}
@@ -117,7 +146,7 @@ export function Home({ navigation }: Props) {
           columnWrapperStyle={{ justifyContent: 'space-between' }}
           contentContainerStyle={{ paddingBottom: 30, paddingHorizontal: 24 }}
           renderItem={({ item }: any) => (
-            <Card name={item.name} />
+            <Card name={item.name} onPress={() => navigation.navigate('PokemonDetails', {name: item.name})} />
           )}
           onEndReached={handleGetMorePokemons}
           onEndReachedThreshold={endOfFetch ? 0.1 : 0}

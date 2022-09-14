@@ -15,3 +15,8 @@ export async function getPokemonByName(name: string): Promise<AxiosResponse> {
   const response = await pokemonApi.get(`/pokemon/${name}`)
   return response
 }
+
+export async function getPokemonByType(type: string): Promise<AxiosResponse> {
+  const response = await pokemonApi.get(`/type/${type}`)
+  return response
+}

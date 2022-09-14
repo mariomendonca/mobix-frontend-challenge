@@ -1,14 +1,15 @@
 import { Text } from "@ui-kitten/components";
+import { TouchableOpacityProps } from "react-native";
 import { Container } from "./styles";
 
 
-interface CardProps {
+interface CardProps extends TouchableOpacityProps {
   name: string
 }
 
-export function Card({ name }: CardProps) {
+export function Card({ name, ...rest }: CardProps) {
   return (
-    <Container>
+    <Container {...rest}>
       <Text>
         {name}
       </Text>
