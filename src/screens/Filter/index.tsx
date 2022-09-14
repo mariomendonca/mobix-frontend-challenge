@@ -7,6 +7,8 @@ import { FilterOption } from "../../components/FilterOption";
 import { AuthRoutesProps } from "../../routes/auth.routes";
 import { logout, setTypes } from "../../store";
 import { Container, FilterContainer, Header, TitleContainer } from "./styles";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { USER_ID } from "../../utils";
 
 type Props = StackScreenProps<AuthRoutesProps, 'Filter'>
 
@@ -20,7 +22,10 @@ export function Filter({ navigation }: Props) {
     {
       text: 'Sair',
       style: 'destructive',
-      onPress: () => dispatch(logout())
+      onPress: () => {
+        AsyncStorage.removeItem(USER_ID)
+        dispatch(logout())
+      }
     },
   ])
 

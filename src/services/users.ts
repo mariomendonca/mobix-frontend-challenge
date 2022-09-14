@@ -9,6 +9,11 @@ export interface User {
 }
 
 export async function login(email: string, password: string): Promise<AxiosResponse> {
-  const response = await api.post('/users/login', { email, password })
+  const response = await api.post<User>('/users/login', { email, password })
+  return response
+}
+
+export async function getById(id: string): Promise<AxiosResponse> {
+  const response = await api.get<User>(`/users/${id}`)
   return response
 }
