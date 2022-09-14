@@ -84,7 +84,7 @@ export function Filter({ navigation }: Props) {
         />
 
         <Button size="large">
-          Aplicar
+          Aplicar filtro
         </Button>
       </FilterContainer>
 

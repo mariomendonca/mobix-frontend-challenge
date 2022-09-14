@@ -1,5 +1,4 @@
 import styled from 'styled-components/native'
-import { colors } from './colors'
 
 export const Container = styled.View`
   flex: 1;
@@ -7,6 +6,8 @@ export const Container = styled.View`
   align-items: center;
 `
 
-export const Content = styled.View`
+export const CenterView = styled.View`
   flex: 1;
+  justify-content: center;
+  align-items: center;
 `

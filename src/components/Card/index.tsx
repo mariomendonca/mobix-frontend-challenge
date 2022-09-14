@@ -1,9 +1,17 @@
+import { Text } from "@ui-kitten/components";
 import { Container } from "./styles";
 
-export function Card() {
+
+interface CardProps {
+  name: string
+}
+
+export function Card({ name }: CardProps) {
   return (
     <Container>
-      
+      <Text>
+        {name}
+      </Text>
     </Container>
   )
 }
