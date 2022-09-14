@@ -22,7 +22,7 @@ export function Home({ navigation }: Props) {
   const [endOfFetch, setEndOfFetch] = useState(false)
 
   async function handleGetAllPokemons() {
-    const response = await getAll(1)
+    const response = await getAll(0)
     setData(response.data.results)
     setIsLoading(false)
   }
@@ -84,6 +84,7 @@ export function Home({ navigation }: Props) {
 
       {!isLoading ? (
         <Scroll
+          keyExtractor={(item: any) => item.name}
           data={data}
           numColumns={2}
           columnWrapperStyle={{ justifyContent: 'space-between' }}
