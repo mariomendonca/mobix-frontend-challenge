@@ -1,4 +1,3 @@
-import { Input as Test } from '../../components/Input'
 import { Button, Icon, Input } from "@ui-kitten/components"
 import { AdviceText, Background, FormContainer, Logo, Margin20, Margin30, WelcomeText } from "./styles"
 
