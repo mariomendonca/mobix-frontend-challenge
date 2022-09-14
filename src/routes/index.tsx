@@ -1,9 +1,11 @@
-import { Text, View } from "react-native"
+import { NavigationContainer } from '@react-navigation/native'
+import { Login } from '../screens/Login'
+import { AuthRoutes } from './auth.routes'
 
 export function Routes() {
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#fff' }}>
-      <Text>Hello world aaaaa</Text>
-    </View>
+    <NavigationContainer>
+      {true ? <Login /> : <AuthRoutes />}
+    </NavigationContainer>
   )
 }
