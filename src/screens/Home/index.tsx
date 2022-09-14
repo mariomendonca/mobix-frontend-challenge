@@ -1,5 +1,5 @@
 import { CenterView, Container } from "../../styles/global"
-import { Logo, Scroll, SearchContainer, SearchInput } from "./styles"
+import { Logo, Scroll, SearchContainer, SearchInput, SinglePokemonContainer } from "./styles"
 import logoImg from '../../assets/logo.png'
 import { Icon } from "@ui-kitten/components"
 import { ActivityIndicator, FlatList, Text, TouchableOpacity, View } from "react-native"
@@ -7,8 +7,8 @@ import { colors } from "../../styles/colors"
 import { Card } from "../../components/Card"
 import { StackScreenProps } from "@react-navigation/stack"
 import { AuthRoutesProps } from "../../routes/auth.routes"
-import { useEffect, useState } from "react"
-import { getAll } from "../../services/pokemon"
+import { useCallback, useEffect, useState } from "react"
+import { getAll, getPokemonByName } from "../../services/pokemon"
 
 type Props = StackScreenProps<AuthRoutesProps, 'Home'>
 
@@ -20,6 +20,8 @@ export function Home({ navigation }: Props) {
   const [isLoading, setIsLoading] = useState(true)
   const [getMoreLoading, setGetMoreLoading] = useState(false)
   const [endOfFetch, setEndOfFetch] = useState(false)
+
+  const [pokemon, setPokemon] = useState<any>({})
 
   async function handleGetAllPokemons() {
     const response = await getAll(0)
@@ -43,9 +45,26 @@ export function Home({ navigation }: Props) {
     handleGetAllPokemons()
   }, [])
 
+  async function handleGetPokemonByName() {
+    try {
+      setIsLoading(true)
+      const resopnse = await getPokemonByName(searchInput)
+      setPokemon(resopnse.data)
+    } catch (error) {
+      setPokemon({})
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
   useEffect(() => {
-    // TODO: search by name function
-  }, [])
+    if (!searchInput) {
+      setPokemon({})
+      return
+    }
+    console.log('here')
+    handleGetPokemonByName()
+  }, [searchInput])
 
   function RenderNoMorePokemons() {
     return (
@@ -68,9 +87,10 @@ export function Home({ navigation }: Props) {
   return (
     <Container>
       <Logo source={logoImg} />
-
+      {console.log(isLoading)}
       <SearchContainer>
         <SearchInput
+          autoCapitalize='none'
           placeholder='Buscar Pokémon'
           placeholderTextColor={colors.lightGray}
           value={searchInput}
@@ -82,7 +102,15 @@ export function Home({ navigation }: Props) {
         </TouchableOpacity>
       </SearchContainer>
 
-      {!isLoading ? (
+      {isLoading ? (
+        <CenterView>
+          <ActivityIndicator color='#000' size='large' />
+        </CenterView>
+      ) : pokemon.name ? (
+        <SinglePokemonContainer>
+          <Card name={pokemon.name} />
+        </SinglePokemonContainer>
+      ) : (
         <Scroll
           keyExtractor={(item: any) => item.name}
           data={data}
@@ -96,10 +124,6 @@ export function Home({ navigation }: Props) {
           onEndReachedThreshold={endOfFetch ? 0.1 : 0}
           ListFooterComponent={endOfFetch ? RenderNoMorePokemons : renderFooterLoading}
         />
-      ) : (
-        <CenterView>
-          <ActivityIndicator color='#000' size='large' />
-        </CenterView>
       )}
 
     </Container>

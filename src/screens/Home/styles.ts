@@ -27,3 +27,8 @@ export const Scroll = styled.FlatList`
   flex: 1;
   width: 100%;
 `
+
+export const SinglePokemonContainer = styled.View`
+  padding: 0 24px;
+  width: 100%;
+`
