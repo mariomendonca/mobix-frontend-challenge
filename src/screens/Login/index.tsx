@@ -4,10 +4,12 @@ import { AdviceText, Background, FormContainer, Logo, Margin20, Margin30, Welcom
 import backgroundImg from '../../assets/background.png'
 import logo from '../../assets/logo.png'
 import { useState } from 'react'
-import { TouchableWithoutFeedback } from "react-native"
+import { ActivityIndicator, Alert, TouchableWithoutFeedback } from "react-native"
+import { login } from "../../services/users"
 
 export function Login() {
   const [secureText, setSecureText] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -17,6 +19,19 @@ export function Login() {
       <Icon {...props} name={secureText ? 'eye' : 'eye-off'} />
     </TouchableWithoutFeedback>
   );
+
+  async function handleLogin() {
+    setIsLoading(true)
+    try {
+      const { data } = await login(email, password)
+      console.log(data)
+    } catch {
+      Alert.alert('Erro no login', 'Credenciais inválidas')
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
 
   return (
     <Background source={backgroundImg}>
@@ -32,6 +47,8 @@ export function Login() {
           size='large'
           label='Email'
           autoCapitalize='none'
+          value={email}
+          onChangeText={setEmail}
         />
         <Margin20 />
         <Input
@@ -43,8 +60,12 @@ export function Login() {
           onChangeText={setPassword}
         />
         <Margin30 />
-        <Button size="large">
-          Login
+        <Button 
+          size="large" 
+          disabled={isLoading || (!email || !password)}
+          onPress={handleLogin}
+        >
+          {!isLoading ? 'Login' : <ActivityIndicator />}
         </Button>
       </FormContainer>
     </Background>
