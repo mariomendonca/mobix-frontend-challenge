@@ -1,13 +1,15 @@
+import { useState } from 'react'
+import { ActivityIndicator, Alert, TouchableWithoutFeedback } from "react-native"
 import { Button, Icon, Input } from "@ui-kitten/components"
 import { AdviceText, Background, FormContainer, Logo, Margin20, Margin30, WelcomeText } from "./styles"
+// import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import backgroundImg from '../../assets/background.png'
 import logo from '../../assets/logo.png'
-import { useState } from 'react'
-import { ActivityIndicator, Alert, TouchableWithoutFeedback } from "react-native"
 import { login as postLogin } from "../../services/users"
 import { useDispatch } from "react-redux"
 import { login } from "../../store"
+import { USER_ID } from '../../utils';
 
 export function Login() {
   const [secureText, setSecureText] = useState(true)
@@ -28,6 +30,7 @@ export function Login() {
     setIsLoading(true)
     try {
       const { data } = await postLogin(email, password)
+      // AsyncStorage.setItem(USER_ID, data.id)
       dispatch(login(data))
     } catch {
       Alert.alert('Erro no login', 'Credenciais inválidas')

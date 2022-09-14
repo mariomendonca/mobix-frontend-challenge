@@ -1,5 +1,7 @@
 import { NavigationContainer } from '@react-navigation/native'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 import { Login } from '../screens/Login'
 import { AuthRoutes } from './auth.routes'
 

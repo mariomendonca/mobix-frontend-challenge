@@ -2,17 +2,17 @@ import { StackScreenProps } from "@react-navigation/stack";
 import { Icon, Text, Button } from "@ui-kitten/components";
 import { useState } from "react";
 import { Alert, FlatList, TouchableOpacity, View } from "react-native";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { FilterOption } from "../../components/FilterOption";
 import { AuthRoutesProps } from "../../routes/auth.routes";
-import { logout } from "../../store";
+import { logout, setTypes } from "../../store";
 import { Container, FilterContainer, Header, TitleContainer } from "./styles";
 
 type Props = StackScreenProps<AuthRoutesProps, 'Filter'>
 
 export function Filter({ navigation }: Props) {
   const dispatch = useDispatch()
-
+  const initialFilter = useSelector((state) => state.filter.value)
   const showAlert = () => Alert.alert('Sair', 'Tem certeza que deseja sair da sua conta?', [
     {
       text: 'Voltar',
@@ -25,7 +25,7 @@ export function Filter({ navigation }: Props) {
   ])
 
   const pokemonTypes = ['Todos', 'Água', 'Fogo', 'Planta', 'Fada', 'Fantasma', 'Gelo']
-  const [selectedTypes, setSelectedTypes] = useState<Array<string>>([])
+  const [selectedTypes, setSelectedTypes] = useState<Array<string>>(initialFilter)
 
   function handleSelectType(type: string) {
     if (type === 'Todos') {
@@ -88,7 +88,10 @@ export function Filter({ navigation }: Props) {
           columnWrapperStyle={{ justifyContent: 'space-between' }}
         />
 
-        <Button size="large">
+        <Button size="large" onPress={() => {
+          dispatch(setTypes(selectedTypes))
+          navigation.goBack()
+        }}>
           Aplicar filtro
         </Button>
       </FilterContainer>
