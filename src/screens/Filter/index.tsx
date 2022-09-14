@@ -53,7 +53,7 @@ export function Filter({ navigation }: Props) {
             Filtro
           </Text>
 
-          <TouchableOpacity style={{ marginLeft: 20 }}>
+          <TouchableOpacity style={{ marginLeft: 20 }} onPress={() => setSelectedTypes([])}>
             <Text status="info">
               Limpar filtro
             </Text>
