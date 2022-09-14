@@ -2,20 +2,25 @@ import { StackScreenProps } from "@react-navigation/stack";
 import { Icon, Text, Button } from "@ui-kitten/components";
 import { useState } from "react";
 import { Alert, FlatList, TouchableOpacity, View } from "react-native";
+import { useDispatch } from "react-redux";
 import { FilterOption } from "../../components/FilterOption";
 import { AuthRoutesProps } from "../../routes/auth.routes";
+import { logout } from "../../store";
 import { Container, FilterContainer, Header, TitleContainer } from "./styles";
 
 type Props = StackScreenProps<AuthRoutesProps, 'Filter'>
 
 export function Filter({ navigation }: Props) {
+  const dispatch = useDispatch()
+
   const showAlert = () => Alert.alert('Sair', 'Tem certeza que deseja sair da sua conta?', [
     {
       text: 'Voltar',
     },
     {
       text: 'Sair',
-      style: 'destructive'
+      style: 'destructive',
+      onPress: () => dispatch(logout())
     },
   ])
 

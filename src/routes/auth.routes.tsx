@@ -18,7 +18,6 @@ export function AuthRoutes() {
       <Screen name='Home' component={Home} />
       <Group screenOptions={{ presentation: 'modal' }}>
         <Screen name='Filter' component={Filter} />
-
       </Group>
     </Navigator>
   )

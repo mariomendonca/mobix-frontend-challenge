@@ -5,7 +5,9 @@ import backgroundImg from '../../assets/background.png'
 import logo from '../../assets/logo.png'
 import { useState } from 'react'
 import { ActivityIndicator, Alert, TouchableWithoutFeedback } from "react-native"
-import { login } from "../../services/users"
+import { login as postLogin } from "../../services/users"
+import { useDispatch } from "react-redux"
+import { login } from "../../store"
 
 export function Login() {
   const [secureText, setSecureText] = useState(true)
@@ -13,6 +15,8 @@ export function Login() {
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+
+  const dispatch = useDispatch()
 
   const renderIcon = (props: any) => (
     <TouchableWithoutFeedback onPress={() => setSecureText(!secureText)}>
@@ -23,8 +27,8 @@ export function Login() {
   async function handleLogin() {
     setIsLoading(true)
     try {
-      const { data } = await login(email, password)
-      console.log(data)
+      const { data } = await postLogin(email, password)
+      dispatch(login(data))
     } catch {
       Alert.alert('Erro no login', 'Credenciais inválidas')
     } finally {

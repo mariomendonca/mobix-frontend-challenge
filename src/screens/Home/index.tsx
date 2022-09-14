@@ -62,7 +62,6 @@ export function Home({ navigation }: Props) {
       setPokemon({})
       return
     }
-    console.log('here')
     handleGetPokemonByName()
   }, [searchInput])
 
@@ -87,7 +86,7 @@ export function Home({ navigation }: Props) {
   return (
     <Container>
       <Logo source={logoImg} />
-      {console.log(isLoading)}
+
       <SearchContainer>
         <SearchInput
           autoCapitalize='none'
