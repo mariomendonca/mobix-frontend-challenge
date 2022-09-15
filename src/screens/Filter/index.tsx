@@ -1,7 +1,7 @@
 import { StackScreenProps } from "@react-navigation/stack";
 import { Icon, Text, Button } from "@ui-kitten/components";
 import { useState } from "react";
-import { Alert, FlatList, TouchableOpacity, View } from "react-native";
+import { Alert, FlatList, TouchableOpacity } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { FilterOption } from "../../components/FilterOption";
 import { AuthRoutesProps } from "../../routes/auth.routes";

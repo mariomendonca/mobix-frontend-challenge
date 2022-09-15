@@ -8,7 +8,7 @@ import { Card } from "../../components/Card"
 import { StackScreenProps } from "@react-navigation/stack"
 import { AuthRoutesProps } from "../../routes/auth.routes"
 import { useEffect, useState } from "react"
-import { getAll, getPokemonByName, getPokemonByType } from "../../services/pokemon"
+import { getAll, getPokemonByName } from "../../services/pokemon"
 import { useSelector } from "react-redux"
 
 type Props = StackScreenProps<AuthRoutesProps, 'Home'>
@@ -44,21 +44,11 @@ export function Home({ navigation }: Props) {
     setGetMoreLoading(false)
   }
 
-  // async function handleGetPokemonsByType() {
-  //   const promises = filter.map((item) => getPokemonByType(item))
-  //   console.log(promises)
-  //   Promise.all()
-  // }
+
 
   useEffect(() => {
     handleGetAllPokemons()
-    // if (filter.length > 0) {
-    //   handleGetAllPokemons()
-    // } else {
-    //   handleGetPokemonsByType()
-    // }
-    // handleGetPokemonsByType()
-  }, [filter])
+  }, [])
 
   async function handleGetPokemonByName() {
     try {
